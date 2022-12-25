@@ -8,6 +8,15 @@ MK_PASS=password
 MK_IP=172.16.0.1
 MK_BCKP_FILE=backup.rsc
 
+
+
+# Tentar se conectar ao Mikrotik via SSH
+sshpass -p $MK_PASS ssh $MK_USER@$MK_IP "echo conectado via SSH no Mikrotik"
+if [ $? -ne 0 ]; then
+  echo "Erro: não foi possível se conectar ao Mikrotik via SSH"
+  exit 1
+fi
+
 # Verificar se o arquivo existe no Mikrotik
 sshpass -p $MK_PASS ssh $MK_USER@$MK_IP "file print where name=$MK_BCKP_FILE"
 if [ $? -ne 0 ]; then
