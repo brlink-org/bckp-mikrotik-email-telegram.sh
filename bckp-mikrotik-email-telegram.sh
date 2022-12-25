@@ -21,5 +21,11 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# Verificar se o arquivo de backup foi realmente baixado
+if [ ! -f $MK_BCKP_FILE ]; then
+  echo "Erro: arquivo de backup não foi baixado"
+  exit 1
+fi
+
 # Exibir uma mensagem de sucesso
 echo "Arquivo de backup baixado com sucesso!"
