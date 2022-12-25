@@ -8,13 +8,14 @@ MK_PASS=password
 MK_IP=172.16.0.1
 MK_BCKP_FILE=backup.rsc
 
-# Conectar ao Mikrotik via SSH e baixar o arquivo de backup
-sshpass -p $MK_PASS ssh $MK_USER@$MK_IP "export file=$MK_BCKP_FILE"
+# Verificar se o arquivo existe no Mikrotik
+sshpass -p $MK_PASS ssh $MK_USER@$MK_IP "file print where name=$MK_BCKP_FILE"
 if [ $? -ne 0 ]; then
-  echo "Erro ao se conectar ao Mikrotik via SSH"
+  echo "Erro: arquivo não encontrado no Mikrotik"
   exit 1
 fi
 
+# Fazer o download do arquivo
 sshpass -p $MK_PASS scp $MK_USER@$MK_IP:/$MK_BCKP_FILE .
 if [ $? -ne 0 ]; then
   echo "Erro ao fazer download do arquivo de backup"
