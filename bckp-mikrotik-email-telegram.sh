@@ -18,8 +18,8 @@ if [ $? -ne 0 ]; then
 fi
 
 # Verificar se o arquivo existe no Mikrotik
-sshpass -p $MK_PASS ssh $MK_USER@$MK_IP "file print where name=$MK_BCKP_FILE"
-if [ $? -ne 0 ]; then
+IFILE_MK=$(sshpass -p $MK_PASS ssh $MK_USER@$MK_IP "file print where name=$MK_BCKP_FILE")
+if ! grep -q "^$MK_BCKP_FILE" <<< "$IFILE_MK"; then
   echo "Erro: arquivo não encontrado no Mikrotik"
   exit 1
 fi
