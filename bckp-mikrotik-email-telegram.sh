@@ -13,7 +13,9 @@ EMAIL_TO=seu-email@gmail.com
 EMAIL_SUBJECT="Backup Mikrotik"
 EMAIL_BODY="Corpo do e-mail"
 
-
+# Define opções para o Telegram
+TOKEN="000000000:0000000000000-0000000000000000000000000000000"
+CHATID="-1234567890123"
 
 
 
@@ -43,3 +45,7 @@ fi
 
 # Exibi uma mensagem de sucesso
 echo "Arquivo de backup baixado com sucesso!"
+
+# Envia o backup baixado para o telegram
+curl -F document=@"$MK_BCKP_FILE" -F caption="EMAIL_SUBJECT" "https://api.telegram.org/bot${TOKEN}/sendDocument?chat_id=$CHATID" &>/dev/null
+echo "Arquivo enviado para o Telegram"
