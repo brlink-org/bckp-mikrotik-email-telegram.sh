@@ -17,6 +17,9 @@ EMAIL_BODY="Corpo do e-mail"
 TOKEN="000000000:0000000000000-0000000000000000000000000000000"
 CHATID="-1234567890123"
 
+# Formato de compactação desejado: zip ou tar
+COMPAC="zip"
+
 
 
 # Tenta se conectar ao Mikrotik via SSH
@@ -43,9 +46,19 @@ if [ ! -f $MK_BCKP_FILE ]; then
   exit 1
 fi
 
-# Exibi uma mensagem de sucesso
+# Exibe uma mensagem de sucesso
 echo "Arquivo de backup baixado com sucesso!"
 
+# Compacta o arquivo de backup
+if [ "$COMPAC" = "zip" ]; then
+  zip -r "$MK_BCKP_FILE.zip" "$MK_BCKP_FILE"
+  ARQ_BKP="$MK_BCKP_FILE.zip"
+else
+  tar -zcvf "$MK_BCKP_FILE.tar.gz" "$MK_BCKP_FILE"
+  ARQ_BKP="$MK_BCKP_FILE.tar.gz"
+fi
+echo "Arquivo compactado"
+
 # Envia o backup baixado para o telegram
-curl -F document=@"$MK_BCKP_FILE" -F caption="EMAIL_SUBJECT" "https://api.telegram.org/bot${TOKEN}/sendDocument?chat_id=$CHATID" &>/dev/null
+curl -F document=@"$ARQ_BKP" -F caption="EMAIL_SUBJECT" "https://api.telegram.org/bot${TOKEN}/sendDocument?chat_id=$CHATID" &>/dev/null
 echo "Arquivo enviado para o Telegram"
