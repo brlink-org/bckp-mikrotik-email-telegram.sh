@@ -8,6 +8,13 @@ MK_PASS=password
 MK_IP=172.16.0.1
 MK_BCKP_FILE=backup.rsc
 
+# Defina o opções de endereço
+EMAIL_TO=seu-email@gmail.com
+EMAIL_SUBJECT="Backup Mikrotik"
+EMAIL_BODY="Corpo do e-mail"
+
+
+
 
 
 # Tenta se conectar ao Mikrotik via SSH
@@ -16,6 +23,10 @@ if [ $? -ne 0 ]; then
   echo "Erro: não foi possível se conectar ao Mikrotik via SSH"
   exit 1
 fi
+
+# Envia e-mail pelo Mikrotik
+ sshpass -p $MK_PASS ssh $MK_USER@$MK_IP '/tool e-mail send to="'"$EMAIL_TO"'" subject="'"$EMAIL_SUBJECT"'" body="'"$EMAIL_BODY"'" file='"$MK_BCKP_FILE"
+echo "Email enviado pelo Mikrotik"
 
 # Faz o download do arquivo
 sshpass -p $MK_PASS scp $MK_USER@$MK_IP:/$MK_BCKP_FILE .
