@@ -45,6 +45,18 @@ echo "Backup enviado por email pelo Mikrotik"
 
 # Faz o download do arquivo de dentro do Mikrotik
 sshpass -p $MK_PASS scp $MK_USER@$MK_IP:/$MK_BCKP_FILE .
+
+# Comente da linha 32 até 47 se desejar mudar o método de conexão de SSH para FTP
+# Destacando que não será possível executar o envio do arquivo por e-mail através do FTP
+# Conecta-se ao Mikrotik via FTP
+
+#ftp -in $MK_IP <<END_SCRIPT
+#quote USER $MK_USER
+#quote PASS $MK_PASS
+#get $MK_BCKP_FILE
+#quit
+#END_SCRIPT
+
 # Verifica se o download foi bem sucedido
 if [ $? -ne 0 ]; then
   # Exibe mensagem de erro ao fazer download do arquivo de backup
